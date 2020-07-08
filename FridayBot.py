@@ -4,18 +4,18 @@ import speech_recognition as sr
 import wikipedia
 import webbrowser
 import os
-import smtplib
+import smtplib 
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
 
 
-
-
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
+    engine.setProperty("rate",145)
+    
 
 def wishMe():
     hour = int(datetime.datetime.now().hour)
@@ -37,7 +37,6 @@ def takeCommand():
         print("Listening...")
         r.pause_threshold = 1
         audio = r.listen(source,timeout=3, phrase_time_limit=3)
-        #audio = r.listen(source)
 
     try:
         print("Recognizing...")
@@ -46,9 +45,9 @@ def takeCommand():
 
     except Exception as e:
         print(e)
-
-        speak("Say that again, please...")
-        print("Say that again, please")
+        engine.setProperty("rate", 120)
+        print("Say that again, please...")
+        speak("Say that again, please")
         return "None"
     return query
 
@@ -83,13 +82,24 @@ if __name__ == "__main__":
             webbrowser.open('www.google.com')
             
         elif 'open coursera' in query:
-            webbrowser.open("coursera.org")
+            webbrowser.open("www.coursera.org")
 
         elif 'open stackoverflow' in query:
             webbrowser.open("www.stackoverflow.com")
 
         elif 'open googlecolab' in query:
             webbrowser.open("www.googlecolab.com")
+
+        elif 'send email' in query:
+            try:
+                speak('What should I say?')
+                content = takeCommand()
+                to = "your_email_address"
+                sendEmail(to, content)
+                speak("Email has been sent!")
+            except Exception as e:
+                print(e)
+                speak("Sorry Boss, I am not able to send this email")    
 
         elif 'exit' in query:    
             speak("Thank you for using me, have a nice day")    
