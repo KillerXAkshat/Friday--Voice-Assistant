@@ -85,6 +85,10 @@ if __name__ == "__main__":
         elif 'open stackoverflow' in query:
             webbrowser.open("www.stackoverflow.com")
 
+        elif 'time' in query:
+            strTime = datetime.datetime.now().strftime("%H:%M:%S")
+            speak(f"Sir, the time is {strTime}")    
+
         elif 'open googlecolab' in query:
             webbrowser.open("www.googlecolab.com")
 
