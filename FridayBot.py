@@ -9,6 +9,7 @@ import random
 from tkinter.filedialog import askdirectory
 import pygame
 from mutagen.id3 import ID3
+from datetime import date 
 from tkinter import *
 
 engine = pyttsx3.init('sapi5')
@@ -87,8 +88,12 @@ if __name__ == "__main__":
 
         elif 'time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
-            speak(f"Sir, the time is {strTime}")    
+            speak(f"Sir, the time is {strTime}")   
 
+        elif 'date' in query:
+            today = date.today()     
+            speak(f"Today's date is {today}")
+  
         elif 'open googlecolab' in query:
             webbrowser.open("www.googlecolab.com")
 
