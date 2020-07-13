@@ -15,6 +15,7 @@ from tkinter import *
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
+username = ""
 
 def speak(audio):
     engine.say(audio)
@@ -98,7 +99,30 @@ if __name__ == "__main__":
             webbrowser.open("www.googlecolab.com")
 
         elif 'spotify' in query:
-            os.startfile('C:\\Program Files\\Spotify\\Spotify.exe')     
+            os.startfile('C:\\Program Files\\Spotify\\Spotify.exe')  
+
+        elif "what's my name" in query:
+            if username == "":
+                speak("I don't know, but i will remember if u tell me. Would u like to add it now")
+                query = takeCommand().lower()
+                if query == 'yes':
+                    speak("Alright. What should i call you")
+                    query = takeCommand().lower()
+                    username = query
+                    speak(f"You'd like to call you {username}. Is that right")
+                    query = takeCommand().lower()
+                    if(query == "yes"):
+                        speak(f"Sure. I'll call you {username} from now on.")
+                    elif(query == "no"):
+                        speak(f"Got it. What should i call you")
+                        query = takeCommand().lower()
+                        username = query
+                        speak(f"okay i will remember {username} as your name")
+                else:
+                    speak("ok, lets stop it for now")
+                    username = ""
+            else:
+                speak(f"Your name is {username}")    
 
         elif 'open music player' in query:
          speak("Opening Music Player")
