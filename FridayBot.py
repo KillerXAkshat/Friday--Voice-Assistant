@@ -7,6 +7,7 @@ import os
 import smtplib 
 import random
 from datetime import date 
+import pywhatkit as kit
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -130,6 +131,9 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry Boss, I am not able to send this email")    
+
+        elif "send whatsapp message" in query:
+            kit.sendwhatmsg("<mobile number>","message",22,13) #hrs,sec
 
         elif 'exit' in query:    
             speak("Thank you for using me, have a nice day")    
