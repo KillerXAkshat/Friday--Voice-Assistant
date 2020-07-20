@@ -5,7 +5,6 @@ import wikipedia
 import webbrowser
 import os
 import smtplib 
-import random
 import pywhatkit as kit
 from datetime import date 
 from datetime import timedelta
@@ -61,19 +60,26 @@ def sendEmail(to, content):
 
 def whatsapp():
     contacts = {"<name>" : "+91<number>" , "<name>" : "+91<number>", "<name>" : "+91<number>"}
-    speak("Who do you want to send message")
+    speak("Whom do you want to send message")
     query = takeCommand().lower()
     if query in contacts:
-        whatsapp.sendto = contacts.get(query)
-        whatsapp.person_name = query
+        sendto = contacts.get(query)
+        person_name = query
+        hrs = int(datetime.datetime.now().strftime("%H"))
+        d = datetime.datetime.now() + timedelta(minutes=2)
+        mins = int(d.strftime("Z%M").replace('Z0','Z').replace('Z',''))
         speak("whats the message.")
         query = takeCommand().lower()
-        whatsapp.message = query
-        hrs = datetime.datetime.now().strftime("%H")
-        whatsapp.hrs = int(hrs)
-        d = datetime.datetime.now() + timedelta(minutes=2)
-        mins = d.strftime("Z%M").replace('Z0','Z').replace('Z','')
-        whatsapp.mins = int(mins)
+        message = query
+        speak(f" So, that's the message {person_name} saying {message}. Are you ready to send it")
+        query = takeCommand().lower()
+        if query == 'yes':
+            kit.sendwhatmsg(sendto,message,hrs,mins)
+            speak("message sent successfully")
+        elif query == 'no' or query == 'cancel':
+            speak("okay no problem. Message cancelled")
+        else:
+            speak("since i am having trouble, i won't send that message. You might want to try again later.")
     else:
         speak("No contact found of this name")
 
@@ -119,16 +125,7 @@ if __name__ == "__main__":
 
         elif "send whatsapp message" in query:
             whatsapp()
-            speak(f" So, that's the message {whatsapp.person_name} saying {whatsapp.message}. Are you ready to send it")
-            query = takeCommand().lower()
-            if query == 'yes' or query == 'cancel':
-                kit.sendwhatmsg(whatsapp.sendto,whatsapp.message,whatsapp.hrs,whatsapp.mins)
-                speak("message sent successfully")
-            if query == 'no':
-                   whatsapp()
-            else:
-                speak("since i am having trouble, i won't send that message. You might want to try again later.")
-  
+
         elif "what's my name" in query:
             if username == "":
                 speak("I don't know, but i will remember if u tell me. Would u like to add it now")
@@ -162,9 +159,6 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry Boss, I am not able to send this email")    
-
-        elif "send whatsapp message" in query:
-            kit.sendwhatmsg("<mobile number>","message",22,13) #hrs,sec
 
         elif 'exit' in query:    
             speak("Thank you for using me, have a nice day")    
