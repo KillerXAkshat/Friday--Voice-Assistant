@@ -6,8 +6,9 @@ import webbrowser
 import os
 import smtplib 
 import random
-from datetime import date 
 import pywhatkit as kit
+from datetime import date 
+from datetime import timedelta
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -58,6 +59,24 @@ def sendEmail(to, content):
     server.sendmail('your_email_address', to, content)
     server.close()
 
+def whatsapp():
+    contacts = {"<name>" : "+91<number>" , "<name>" : "+91<number>", "<name>" : "+91<number>"}
+    speak("Who do you want to send message")
+    query = takeCommand().lower()
+    if query in contacts:
+        whatsapp.sendto = contacts.get(query)
+        whatsapp.person_name = query
+        speak("whats the message.")
+        query = takeCommand().lower()
+        whatsapp.message = query
+        hrs = datetime.datetime.now().strftime("%H")
+        whatsapp.hrs = int(hrs)
+        d = datetime.datetime.now() + timedelta(minutes=2)
+        mins = d.strftime("Z%M").replace('Z0','Z').replace('Z','')
+        whatsapp.mins = int(mins)
+    else:
+        speak("No contact found of this name")
+
 if __name__ == "__main__":
     wishMe()
     while True:
@@ -96,8 +115,20 @@ if __name__ == "__main__":
             webbrowser.open("www.googlecolab.com")
 
         elif 'spotify' in query:
-            os.startfile('C:\\Program Files\\Spotify\\Spotify.exe')  
+            os.startfile('C:\\Program Files\\Spotify\\Spotify.exe')
 
+        elif "send whatsapp message" in query:
+            whatsapp()
+            speak(f" So, that's the message {whatsapp.person_name} saying {whatsapp.message}. Are you ready to send it")
+            query = takeCommand().lower()
+            if query == 'yes' or query == 'cancel':
+                kit.sendwhatmsg(whatsapp.sendto,whatsapp.message,whatsapp.hrs,whatsapp.mins)
+                speak("message sent successfully")
+            if query == 'no':
+                   whatsapp()
+            else:
+                speak("since i am having trouble, i won't send that message. You might want to try again later.")
+  
         elif "what's my name" in query:
             if username == "":
                 speak("I don't know, but i will remember if u tell me. Would u like to add it now")
