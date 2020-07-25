@@ -5,8 +5,9 @@ import wikipedia
 import webbrowser
 import os
 import smtplib 
-import random
+import pywhatkit as kit
 from datetime import date 
+from datetime import timedelta
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -57,6 +58,55 @@ def sendEmail(to, content):
     server.sendmail('your_email_address', to, content)
     server.close()
 
+def whatsmyname():
+    global username
+    if username == "":
+        speak("I don't know, but i will remember if u tell me. Would u like to add it now")
+        query = takeCommand().lower()
+        if query == 'yes':
+           speak("Alright. What should i call you")
+           query = takeCommand().lower()
+           username = query
+           speak(f"You'd like to call you {username}. Is that right")
+           query = takeCommand().lower()
+           if(query == "yes"):
+             speak(f"Sure. I'll call you {username} from now on.")
+           else:
+             speak(f"Got it. What should i call you")
+             query = takeCommand().lower()
+             username = query
+             speak(f"okay i will remember {username} as your name")
+        else:
+            speak("ok, lets stop it for now")
+            username = ""
+    else:
+        speak(f"Your name is {username}")
+
+def whatsapp():
+    contacts = {"<name>" : "+91<number>" , "<name>" : "+91<number>", "<name>" : "+91<number>"}
+    speak("Whom do you want to send message")
+    query = takeCommand().lower()
+    if query in contacts:
+        sendto = contacts.get(query)
+        person_name = query
+        hrs = int(datetime.datetime.now().strftime("%H"))
+        d = datetime.datetime.now() + timedelta(minutes=2)
+        mins = int(d.strftime("Z%M").replace('Z0','Z').replace('Z',''))
+        speak("whats the message.")
+        query = takeCommand().lower()
+        message = query
+        speak(f" So, that's the message {person_name} saying {message}. Are you ready to send it")
+        query = takeCommand().lower()
+        if query == 'yes':
+            kit.sendwhatmsg(sendto,message,hrs,mins)
+            speak("message sent successfully")
+        elif query == 'no' or query == 'cancel':
+            speak("okay no problem. Message cancelled")
+        else:
+            speak("since i am having trouble, i won't send that message. You might want to try again later.")
+    else:
+        speak("No contact found of this name")
+
 if __name__ == "__main__":
     wishMe()
     while True:
@@ -95,31 +145,14 @@ if __name__ == "__main__":
             webbrowser.open("www.googlecolab.com")
 
         elif 'spotify' in query:
-            os.startfile('C:\\Program Files\\Spotify\\Spotify.exe')  
+            os.startfile('C:\\Program Files\\Spotify\\Spotify.exe')
+
+        elif "send whatsapp message" in query:
+            whatsapp()
 
         elif "what's my name" in query:
-            if username == "":
-                speak("I don't know, but i will remember if u tell me. Would u like to add it now")
-                query = takeCommand().lower()
-                if query == 'yes':
-                    speak("Alright. What should i call you")
-                    query = takeCommand().lower()
-                    username = query
-                    speak(f"You'd like to call you {username}. Is that right")
-                    query = takeCommand().lower()
-                    if(query == "yes"):
-                        speak(f"Sure. I'll call you {username} from now on.")
-                    elif(query == "no"):
-                        speak(f"Got it. What should i call you")
-                        query = takeCommand().lower()
-                        username = query
-                        speak(f"okay i will remember {username} as your name")
-                else:
-                    speak("ok, lets stop it for now")
-                    username = ""
-            else:
-                speak(f"Your name is {username}")    
-        
+            whatsmyname()
+
         elif 'send email' in query:
             try:
                 speak('What should I say?')
