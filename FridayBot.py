@@ -58,6 +58,13 @@ def sendEmail(to, content):
     server.sendmail('your_email_address', to, content)
     server.close()
 
+def youthoob_video():
+    speak("What do you want to play")
+    query = takeCommand().lower()
+    speak(f"ok playing {query} on youtube")
+    kit.playonyt(query)
+    
+
 def whatsmyname():
     global username
     if username == "":
@@ -123,6 +130,10 @@ if __name__ == "__main__":
 
         elif 'open youtube' in query:
             webbrowser.open("www.youtube.com")
+
+        elif 'play on youtube' in query:
+            youthoob_video()
+            break
 
         elif 'open google' in query:
             webbrowser.open('www.google.com')
