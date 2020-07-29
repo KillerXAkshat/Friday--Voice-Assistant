@@ -4,6 +4,7 @@ import speech_recognition as sr
 import wikipedia
 import webbrowser
 import os
+import random
 import smtplib 
 import pywhatkit as kit
 from datetime import date 
@@ -163,7 +164,11 @@ if __name__ == "__main__":
 
         elif "what's my name" in query:
             whatsmyname()
-
+        
+        elif 'how are you'in query or "what's up" in query:
+            lis=['I am cool, what about you?','Just doing my work','Performing my duty of serving you','I am nice and full of energy']
+            speak(random.choice(lis))
+            
         elif 'send email' in query:
             try:
                 speak('What should I say?')
