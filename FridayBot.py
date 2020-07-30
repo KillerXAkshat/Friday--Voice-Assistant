@@ -6,8 +6,9 @@ import webbrowser
 import os
 import pyjokes
 import random
-import smtplib 
+import smtplib
 import pywhatkit as kit
+from covid import Covid
 from datetime import date
 from datetime import timedelta
 
@@ -43,7 +44,7 @@ def takeCommand():
     try:
         print("Recognizing...")
         query = r.recognize_google(audio, language= 'en-in')
-        
+ 
     except Exception as e:
         print(e)
         engine.setProperty("rate", 120)
@@ -65,9 +66,28 @@ def youthoob_video():
     query = takeCommand().lower()
     speak(f"ok playing {query} on youtube")
     kit.playonyt(query)
-    
-def jokes():
-    speak(pyjokes.get_joke())    
+
+def covid():
+    covid = Covid(source="worldometers")
+    speak("Which country information you want")
+    query = takeCommand().lower()
+    country = query
+    try:
+        country_data = covid.get_status_by_country_name(country)
+        speak(f"Corona Virus Info in {country} according to data provided by worldometer")
+        output_text =   (f"Corona Virus Info in {country}:\n")
+        speak(f"Confirmed cases are {country_data['confirmed']}")
+        output_text +=  f"`⚠️  Confirmed   : {country_data['confirmed']}`\n"
+        speak(f"active cases are {country_data['active']}")
+        output_text += f"`☢️  Active      : {country_data['active']}`\n"
+        speak(f"total deaths are {country_data['deaths']}")
+        output_text += f"`⚰️  Deaths      : {country_data['deaths']}`\n"
+        speak(f"total recovered cases are {country_data['recovered']}")
+        output_text += f"`💖 Recovered   : {country_data['recovered']}`\n"
+        output_text += ("Data provided by Worldometer")
+        print(output_text)
+    except ValueError:
+        speak("No information yet about this country")
 
 def whatsmyname():
     global username
@@ -159,22 +179,25 @@ if __name__ == "__main__":
         elif 'open googlecolab' in query:
             webbrowser.open("www.googlecolab.com")
 
-        elif 'spotify' in query:
-            os.startfile('C:\\Program Files\\Spotify\\Spotify')
+        elif 'open downoads' in query:
+            os.startfile('C:\\Users\\Akshat\\Downloads')
+
+        elif 'covid' in query or 'corona' in query:
+            covid()    
 
         elif "send whatsapp message" in query:
             whatsapp()
 
         elif "what's my name" in query:
             whatsmyname()
-        
+
         elif 'joke' in query:
-            jokes()
-        
+            speak(pyjokes.get_joke())
+
         elif 'how are you'in query or "what's up" in query:
             lis=['I am cool, what about you?','Just doing my work','Performing my duty of serving you','I am nice and full of energy']
             speak(random.choice(lis))
-            
+
         elif 'send email' in query:
             try:
                 speak('What should I say?')
@@ -184,8 +207,8 @@ if __name__ == "__main__":
                 speak("Email has been sent!")
             except Exception as e:
                 print(e)
-                speak("Sorry Boss, I am not able to send this email"
+                speak("Sorry Boss, I am not able to send this email")
 
-        elif 'exit' in query:    
-            speak("Thank you for using me, have a nice day")    
+        elif 'exit' in query:
+            speak("Thank you for using me, have a nice day")
             exit()
