@@ -29,7 +29,7 @@ def wishMe():
         speak("Good Evening Boss!")
 
     speak("I am Friday. Please tell me how may I help you!")
-    
+
 def takeCommand():
     # It takes microphone input from the user and returns string output
     r = sr.Recognizer()
@@ -72,7 +72,7 @@ def whatsmyname():
            if(query == "yes"):
                speak(f"Sure. I'll call you {username} from now on.")
            else:
-               speak(f"Got it. What should i call you")
+               speak("Got it. What should i call you")
                query = takeCommand().lower()
                username = query
                speak(f"okay i will remember {username} as your name")
@@ -135,7 +135,7 @@ if __name__ == "__main__":
 
         elif 'time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
-            speak(f"Sir, the time is {strTime}")   
+            speak(f"Sir, the time is {strTime}")
 
         elif 'date' in query:
             today = date.today()
@@ -145,7 +145,7 @@ if __name__ == "__main__":
             webbrowser.open("www.googlecolab.com")
 
         elif 'spotify' in query:
-            os.startfile('C:\\Program Files\\Spotify\\Spotify.exe')
+            os.startfile('C:\\Program Files\\Spotify\\Spotify')
 
         elif "send whatsapp message" in query:
             whatsapp()
