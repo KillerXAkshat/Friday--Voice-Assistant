@@ -6,7 +6,7 @@ import webbrowser
 import os
 import pyjokes
 import random
-import smtplib 
+import smtplib
 import pywhatkit as kit
 from datetime import date
 from datetime import timedelta
@@ -43,7 +43,7 @@ def takeCommand():
     try:
         print("Recognizing...")
         query = r.recognize_google(audio, language= 'en-in')
-        
+
     except Exception as e:
         print(e)
         engine.setProperty("rate", 120)
@@ -67,7 +67,7 @@ def youthoob_video():
     kit.playonyt(query)
     
 def jokes():
-    speak(pyjokes.get_joke())    
+    speak(pyjokes.get_joke())
 
 def whatsmyname():
     global username
@@ -148,6 +148,9 @@ if __name__ == "__main__":
         elif 'open stackoverflow' in query:
             webbrowser.open("www.stackoverflow.com")
 
+        elif 'open downoads' in query:
+            os.startfile('C:\\Users\\Akshat\\Downloads')
+
         elif 'time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
             speak(f"Sir, the time is {strTime}")
@@ -183,6 +186,6 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry Boss, I am not able to send this email")
 
-        elif 'exit' in query:    
-            speak("Thank you for using me, have a nice day")    
+        elif 'exit' in query:
+            speak("Thank you for using me, have a nice day")
             exit()
