@@ -159,9 +159,6 @@ if __name__ == "__main__":
         elif 'open googlecolab' in query:
             webbrowser.open("www.googlecolab.com")
 
-        elif 'spotify' in query:
-            os.startfile('C:\\Program Files\\Spotify\\Spotify')
-
         elif "send whatsapp message" in query:
             whatsapp()
 
@@ -174,7 +171,7 @@ if __name__ == "__main__":
         elif 'how are you'in query or "what's up" in query:
             lis=['I am cool, what about you?','Just doing my work','Performing my duty of serving you','I am nice and full of energy']
             speak(random.choice(lis))
-            
+
         elif 'send email' in query:
             try:
                 speak('What should I say?')
@@ -184,7 +181,7 @@ if __name__ == "__main__":
                 speak("Email has been sent!")
             except Exception as e:
                 print(e)
-                speak("Sorry Boss, I am not able to send this email"
+                speak("Sorry Boss, I am not able to send this email")
 
         elif 'exit' in query:    
             speak("Thank you for using me, have a nice day")    
