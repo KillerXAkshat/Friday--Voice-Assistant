@@ -4,7 +4,9 @@ import speech_recognition as sr
 import wikipedia
 import webbrowser
 import os
-import smtplib
+import pyjokes
+import random
+import smtplib 
 import pywhatkit as kit
 from datetime import date
 from datetime import timedelta
@@ -57,6 +59,15 @@ def sendEmail(to, content):
     server.login('your_email_address', 'your_password')
     server.sendmail('your_email_address', to, content)
     server.close()
+
+def youthoob_video():
+    speak("What do you want to play")
+    query = takeCommand().lower()
+    speak(f"ok playing {query} on youtube")
+    kit.playonyt(query)
+    
+def jokes():
+    speak(pyjokes.get_joke())    
 
 def whatsmyname():
     global username
@@ -124,6 +135,10 @@ if __name__ == "__main__":
         elif 'open youtube' in query:
             webbrowser.open("www.youtube.com")
 
+        elif 'play on youtube' in query:
+            youthoob_video()
+            break
+
         elif 'open google' in query:
             webbrowser.open('www.google.com')
             
@@ -152,7 +167,14 @@ if __name__ == "__main__":
 
         elif "what's my name" in query:
             whatsmyname()
-
+        
+        elif 'joke' in query:
+            jokes()
+        
+        elif 'how are you'in query or "what's up" in query:
+            lis=['I am cool, what about you?','Just doing my work','Performing my duty of serving you','I am nice and full of energy']
+            speak(random.choice(lis))
+            
         elif 'send email' in query:
             try:
                 speak('What should I say?')
@@ -162,8 +184,8 @@ if __name__ == "__main__":
                 speak("Email has been sent!")
             except Exception as e:
                 print(e)
-                speak("Sorry Boss, I am not able to send this email")
+                speak("Sorry Boss, I am not able to send this email"
 
-        elif 'exit' in query:
-            speak("Thank you for using me, have a nice day")
+        elif 'exit' in query:    
+            speak("Thank you for using me, have a nice day")    
             exit()
