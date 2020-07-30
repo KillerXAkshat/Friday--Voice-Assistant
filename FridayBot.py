@@ -4,9 +4,9 @@ import speech_recognition as sr
 import wikipedia
 import webbrowser
 import os
-import smtplib 
+import smtplib
 import pywhatkit as kit
-from datetime import date 
+from datetime import date
 from datetime import timedelta
 
 engine = pyttsx3.init('sapi5')
@@ -18,7 +18,7 @@ def speak(audio):
     engine.say(audio)
     engine.runAndWait()
     engine.setProperty("rate",145)
-    
+
 def wishMe():
     hour = int(datetime.datetime.now().hour)
     if hour >=0 and hour<12:
@@ -70,12 +70,12 @@ def whatsmyname():
            speak(f"You'd like to call you {username}. Is that right")
            query = takeCommand().lower()
            if(query == "yes"):
-             speak(f"Sure. I'll call you {username} from now on.")
+               speak(f"Sure. I'll call you {username} from now on.")
            else:
-             speak(f"Got it. What should i call you")
-             query = takeCommand().lower()
-             username = query
-             speak(f"okay i will remember {username} as your name")
+               speak(f"Got it. What should i call you")
+               query = takeCommand().lower()
+               username = query
+               speak(f"okay i will remember {username} as your name")
         else:
             speak("ok, lets stop it for now")
             username = ""
@@ -83,7 +83,7 @@ def whatsmyname():
         speak(f"Your name is {username}")
 
 def whatsapp():
-    contacts = {"<name>" : "+91<number>" , "<name>" : "+91<number>", "<name>" : "+91<number>"}
+    contacts = {"<name1>" : "+91<number>" , "<name2>" : "+91<number>", "<name3>" : "+91<number>"}
     speak("Whom do you want to send message")
     query = takeCommand().lower()
     if query in contacts:
@@ -138,9 +138,9 @@ if __name__ == "__main__":
             speak(f"Sir, the time is {strTime}")   
 
         elif 'date' in query:
-            today = date.today()     
+            today = date.today()
             speak(f"Today's date is {today}")
-  
+
         elif 'open googlecolab' in query:
             webbrowser.open("www.googlecolab.com")
 
@@ -162,8 +162,8 @@ if __name__ == "__main__":
                 speak("Email has been sent!")
             except Exception as e:
                 print(e)
-                speak("Sorry Boss, I am not able to send this email")    
+                speak("Sorry Boss, I am not able to send this email")
 
-        elif 'exit' in query:    
-            speak("Thank you for using me, have a nice day")    
+        elif 'exit' in query:
+            speak("Thank you for using me, have a nice day")
             exit()
