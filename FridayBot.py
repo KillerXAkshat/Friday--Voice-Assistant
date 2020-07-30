@@ -44,7 +44,7 @@ def takeCommand():
     try:
         print("Recognizing...")
         query = r.recognize_google(audio, language= 'en-in')
- 
+
     except Exception as e:
         print(e)
         engine.setProperty("rate", 120)
@@ -183,7 +183,7 @@ if __name__ == "__main__":
             os.startfile('C:\\Users\\Akshat\\Downloads')
 
         elif 'covid' in query or 'corona' in query:
-            covid()    
+            covid()
 
         elif "send whatsapp message" in query:
             whatsapp()
