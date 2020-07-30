@@ -4,6 +4,7 @@ import speech_recognition as sr
 import wikipedia
 import webbrowser
 import os
+import pyjokes
 import random
 import smtplib 
 import pywhatkit as kit
@@ -65,6 +66,8 @@ def youthoob_video():
     speak(f"ok playing {query} on youtube")
     kit.playonyt(query)
     
+def jokes():
+    speak(pyjokes.get_joke())    
 
 def whatsmyname():
     global username
@@ -164,6 +167,9 @@ if __name__ == "__main__":
 
         elif "what's my name" in query:
             whatsmyname()
+        
+        elif 'joke' in query:
+            jokes()
         
         elif 'how are you'in query or "what's up" in query:
             lis=['I am cool, what about you?','Just doing my work','Performing my duty of serving you','I am nice and full of energy']
