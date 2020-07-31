@@ -4,11 +4,16 @@ import speech_recognition as sr
 import wikipedia
 import webbrowser
 import os
+import json
 import pyjokes
 import random
 import smtplib
 import pywhatkit as kit
 from covid import Covid
+from requests import get
+from pytz import country_timezones as c_tz
+from pytz import timezone as tz
+from pytz import country_names as c_n
 from datetime import date
 from datetime import timedelta
 
@@ -161,7 +166,7 @@ if __name__ == "__main__":
 
         elif 'open google' in query:
             webbrowser.open('www.google.com')
-            
+
         elif 'open coursera' in query:
             webbrowser.open("www.coursera.org")
 
@@ -184,6 +189,33 @@ if __name__ == "__main__":
 
         elif 'covid' in query or 'corona' in query:
             covid()
+
+        elif "weather today" in query:
+            APPID = "<Add OWM API>"
+            speak("which country weather information you need")
+            query =takeCommand().lower()
+            CITY = query
+            url = f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={APPID}'
+            request = get(url)
+            result = json.loads(request.text)
+            cityname = result['name']
+            curtemp = result['main']['temp']
+            min_temp = result['main']['temp_min']
+            max_temp = result['main']['temp_max']
+            country = result['sys']['country']
+            desc = result['weather'][0]
+            desc = desc['main']
+            ctimezone = tz(c_tz[country][0])
+            time = datetime.datetime.now(ctimezone).strftime("%A, %I:%M %p")
+            fullc_n = c_n[f"{country}"]
+            def celsius(c):
+                temp = str((c - 273.15)).split(".")
+                return temp[0]
+            speak(f"Currently in {cityname} it is {celsius(curtemp)} and {desc} with the high of {celsius(max_temp)}°C and low of {celsius(min_temp)}°C")
+            print("\n\n" +f"Temperature: {celsius(curtemp)}°C\n"+
+                  f"Min. Temp. : {celsius(min_temp)}°C\n"
+                  f"Max. Temp. : {celsius(max_temp)}°C\n\n"
+                  f"{desc}\n" +f"{cityname}, {fullc_n}\n" + f"{time}\n\n")
 
         elif "send whatsapp message" in query:
             whatsapp()
