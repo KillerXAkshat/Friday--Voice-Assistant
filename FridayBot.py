@@ -94,9 +94,6 @@ def covid():
     except ValueError:
         speak("No information yet about this country")
 
-def jokes():
-    speak(pyjokes.get_joke())
-
 def whatsmyname():
     global username
     if username == "":
@@ -176,9 +173,6 @@ if __name__ == "__main__":
         elif 'open stackoverflow' in query:
             webbrowser.open("www.stackoverflow.com")
 
-        elif 'open downoads' in query:
-            os.startfile('C:\\Users\\Akshat\\Downloads')
-
         elif 'time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
             speak(f"Sir, the time is {strTime}")
@@ -196,7 +190,7 @@ if __name__ == "__main__":
         elif 'covid' in query or 'corona' in query:
             covid()
 
-        elif "weather" in query:
+        elif "weather today" in query:
             APPID = "" #Add your API key here...
             if not APPID:
                 speak("Get an API key from openweathermap first.")
