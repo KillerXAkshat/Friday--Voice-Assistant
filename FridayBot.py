@@ -4,10 +4,16 @@ import speech_recognition as sr
 import wikipedia
 import webbrowser
 import os
+import json
 import pyjokes
 import random
 import smtplib
 import pywhatkit as kit
+from covid import Covid
+from requests import get
+from pytz import country_timezones as c_tz
+from pytz import timezone as tz
+from pytz import country_names as c_n
 from datetime import date
 from datetime import timedelta
 
@@ -65,7 +71,29 @@ def youthoob_video():
     query = takeCommand().lower()
     speak(f"ok playing {query} on youtube")
     kit.playonyt(query)
-    
+
+def covid():
+    covid = Covid(source="worldometers")
+    speak("Which country information you want")
+    query = takeCommand().lower()
+    country = query
+    try:
+        country_data = covid.get_status_by_country_name(country)
+        speak(f"Corona Virus Info in {country} according to data provided by worldometer")
+        output_text =   (f"Corona Virus Info in {country}:\n")
+        speak(f"Confirmed cases are {country_data['confirmed']}")
+        output_text +=  f"`⚠️  Confirmed   : {country_data['confirmed']}`\n"
+        speak(f"active cases are {country_data['active']}")
+        output_text += f"`☢️  Active      : {country_data['active']}`\n"
+        speak(f"total deaths are {country_data['deaths']}")
+        output_text += f"`⚰️  Deaths      : {country_data['deaths']}`\n"
+        speak(f"total recovered cases are {country_data['recovered']}")
+        output_text += f"`💖 Recovered   : {country_data['recovered']}`\n"
+        output_text += ("Data provided by Worldometer")
+        print(output_text)
+    except ValueError:
+        speak("No information yet about this country")
+
 def jokes():
     speak(pyjokes.get_joke())
 
@@ -141,7 +169,7 @@ if __name__ == "__main__":
 
         elif 'open google' in query:
             webbrowser.open('www.google.com')
-            
+
         elif 'open coursera' in query:
             webbrowser.open("www.coursera.org")
 
@@ -162,15 +190,54 @@ if __name__ == "__main__":
         elif 'open googlecolab' in query:
             webbrowser.open("www.googlecolab.com")
 
+        elif 'open downoads' in query:
+            os.startfile('C:\\Users\\Akshat\\Downloads')
+
+        elif 'covid' in query or 'corona' in query:
+            covid()
+
+        elif "weather" in query:
+            APPID = "" #Add your API key here...
+            if not APPID:
+                speak("Get an API key from openweathermap first.")
+                continue
+            speak("which country weather information you need")
+            query =takeCommand().lower()
+            try:
+                CITY = query
+                url = f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={APPID}'
+                request = get(url)
+                result = json.loads(request.text)
+                cityname = result['name']
+                curtemp = result['main']['temp']
+                min_temp = result['main']['temp_min']
+                max_temp = result['main']['temp_max']
+                country = result['sys']['country']
+                desc = result['weather'][0]
+                desc = desc['main']
+                ctimezone = tz(c_tz[country][0])
+                time = datetime.datetime.now(ctimezone).strftime("%A, %I:%M %p")
+                fullc_n = c_n[f"{country}"]
+                def celsius(c):
+                    temp = str((c - 273.15)).split(".")
+                    return temp[0]
+                speak(f"Currently in {cityname} it is {celsius(curtemp)} and {desc} with the high of {celsius(max_temp)}°C and low of {celsius(min_temp)}°C")
+                print("\n\n" +f"Temperature: {celsius(curtemp)}°C\n"+
+                      f"Min. Temp. : {celsius(min_temp)}°C\n"
+                      f"Max. Temp. : {celsius(max_temp)}°C\n\n"
+                      f"{desc}\n" +f"{cityname}, {fullc_n}\n" + f"{time}\n\n")
+            except KeyError:
+                   speak("No information yet about this city")
+
         elif "send whatsapp message" in query:
             whatsapp()
 
         elif "what's my name" in query:
             whatsmyname()
-        
+
         elif 'joke' in query:
-            jokes()
-        
+            speak(pyjokes.get_joke())
+
         elif 'how are you'in query or "what's up" in query:
             lis=['I am cool, what about you?','Just doing my work','Performing my duty of serving you','I am nice and full of energy']
             speak(random.choice(lis))
