@@ -1,4 +1,5 @@
 # Friday--Voice Assistant
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6a939dab445843fdb605008333fcce1b)](https://app.codacy.com/manual/KillerXAkshat/FridayChat-Bot?utm_source=github.com&utm_medium=referral&utm_content=KillerXAkshat/FridayChat-Bot&utm_campaign=Badge_Grade_Dashboard)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cb9d22a03de14cc6840ebbb20a594642)](https://www.codacy.com/manual/KillerXAkshat/FridayChat-Bot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KillerXAkshat/FridayChat-Bot&amp;utm_campaign=Badge_Grade)
 [![GitHub forks](https://img.shields.io/github/forks/KillerXAkshat/FridayChat-Bot.svg?logo=github&color=blue)](https://github.com/KillerXAkshat/FridayChat-Bot/network)
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
