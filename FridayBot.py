@@ -72,6 +72,39 @@ def youthoob_video():
     speak(f"ok playing {query} on youtube")
     kit.playonyt(query)
 
+def weather():
+    APPID = "" #Add your API key here...
+    if not APPID:
+        speak("Get an API key from openweathermap first.")
+        return None
+    speak("which city weather information you need")
+    query =takeCommand().lower()
+    try:
+        CITY = query
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={APPID}'
+        request = get(url)
+        result = json.loads(request.text)
+        cityname = result['name']
+        curtemp = result['main']['temp']
+        min_temp = result['main']['temp_min']
+        max_temp = result['main']['temp_max']
+        country = result['sys']['country']
+        desc = result['weather'][0]
+        desc = desc['main']
+        ctimezone = tz(c_tz[country][0])
+        time = datetime.datetime.now(ctimezone).strftime("%A, %I:%M %p")
+        fullc_n = c_n[f"{country}"]
+        def celsius(c):
+            temp = str((c - 273.15)).split(".")
+            return temp[0]
+        speak(f"Currently in {cityname} it is {celsius(curtemp)} and {desc} with the high of {celsius(max_temp)}°C and low of {celsius(min_temp)}°C")
+        print("\n\n" +f"Temperature: {celsius(curtemp)}°C\n"+
+                      f"Min. Temp. : {celsius(min_temp)}°C\n"
+                      f"Max. Temp. : {celsius(max_temp)}°C\n\n"
+                      f"{desc}\n" +f"{cityname}, {fullc_n}\n" + f"{time}\n\n")
+    except KeyError:
+           speak("No information yet about this city")
+
 def covid():
     covid = Covid(source="worldometers")
     speak("Which country information you want")
@@ -93,9 +126,6 @@ def covid():
         print(output_text)
     except ValueError:
         speak("No information yet about this country")
-
-def jokes():
-    speak(pyjokes.get_joke())
 
 def whatsmyname():
     global username
@@ -176,9 +206,6 @@ if __name__ == "__main__":
         elif 'open stackoverflow' in query:
             webbrowser.open("www.stackoverflow.com")
 
-        elif 'open downoads' in query:
-            os.startfile('C:\\Users\\Akshat\\Downloads')
-
         elif 'time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
             speak(f"Sir, the time is {strTime}")
@@ -196,38 +223,8 @@ if __name__ == "__main__":
         elif 'covid' in query or 'corona' in query:
             covid()
 
-        elif "weather" in query:
-            APPID = "" #Add your API key here...
-            if not APPID:
-                speak("Get an API key from openweathermap first.")
-                continue
-            speak("which country weather information you need")
-            query =takeCommand().lower()
-            try:
-                CITY = query
-                url = f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={APPID}'
-                request = get(url)
-                result = json.loads(request.text)
-                cityname = result['name']
-                curtemp = result['main']['temp']
-                min_temp = result['main']['temp_min']
-                max_temp = result['main']['temp_max']
-                country = result['sys']['country']
-                desc = result['weather'][0]
-                desc = desc['main']
-                ctimezone = tz(c_tz[country][0])
-                time = datetime.datetime.now(ctimezone).strftime("%A, %I:%M %p")
-                fullc_n = c_n[f"{country}"]
-                def celsius(c):
-                    temp = str((c - 273.15)).split(".")
-                    return temp[0]
-                speak(f"Currently in {cityname} it is {celsius(curtemp)} and {desc} with the high of {celsius(max_temp)}°C and low of {celsius(min_temp)}°C")
-                print("\n\n" +f"Temperature: {celsius(curtemp)}°C\n"+
-                      f"Min. Temp. : {celsius(min_temp)}°C\n"
-                      f"Max. Temp. : {celsius(max_temp)}°C\n\n"
-                      f"{desc}\n" +f"{cityname}, {fullc_n}\n" + f"{time}\n\n")
-            except KeyError:
-                   speak("No information yet about this city")
+        elif "weather today" in query:
+           weather()
 
         elif "send whatsapp message" in query:
             whatsapp()
